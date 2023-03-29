@@ -7,7 +7,7 @@ import * as S from './styles';
 type AccordionItemProps = {
   title: string;
   isOpen: boolean;
-  step: number;
+  stepNumber: number;
   actualStep: number;
   handleUpdateStep: (e: any) => Promise<void>;
   toggleOpen: () => void;
@@ -19,7 +19,7 @@ type AccordionItemProps = {
 export const AccordionItem: React.FC<AccordionItemProps> = ({
   title,
   isOpen,
-  step,
+  stepNumber,
   actualStep,
   handleUpdateStep,
   toggleOpen,
@@ -27,15 +27,15 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
   isAbleToGO = true,
   isFinalStep = false,
 }) => {
-  const stepIsOk = isAbleToGO && step < actualStep;
+  const stepIsOk = isAbleToGO && stepNumber < actualStep;
   return (
     <S.AccordionContent
       arrow={Arrow}
       isOpen={isOpen}
       onClick={toggleOpen}
-      isDisabled={step > actualStep}
+      isDisabled={stepNumber > actualStep}
     >
-      <AccordionTitle title={title} stepIsOk={stepIsOk} step={step + 1} />
+      <AccordionTitle title={title} stepIsOk={stepIsOk} step={stepNumber + 1} />
 
       {isOpen && (
         <S.FormSection onClick={(e: any) => e.stopPropagation()}>

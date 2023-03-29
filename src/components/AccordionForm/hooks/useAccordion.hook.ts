@@ -6,6 +6,11 @@ interface useAccordionDTO<T extends object> {
   initialState: T;
 }
 
+interface handleUpdateStepDTO<T> {
+  step: keyof T;
+  fieldsToValidate?: string[];
+}
+
 export function useAccordion<T extends object>({
   trigger,
   initialState,
@@ -20,29 +25,38 @@ export function useAccordion<T extends object>({
     {} as T,
   );
 
+  const getStepNumber = (key: keyof T) =>
+    Object.keys(initialState).reduce<any>((acc, current, index) => {
+      if (key === current) return index;
+      return acc;
+    }, 0);
+
+  const getNextStep = (stepNumbem: number) =>
+    Object.keys(baseProgressiveStep).filter(
+      (_, index) => index === stepNumbem + 1,
+    )[0];
+
   const handleUpdateStep =
-    (step: number, fieldsToValidate = []) =>
+    ({ step, fieldsToValidate = [] }: handleUpdateStepDTO<T>) =>
     async (e: any) => {
+      const stepNumber = getStepNumber(step);
       e.stopPropagation();
 
       const isAbleToGO = await trigger(fieldsToValidate);
       if (!isAbleToGO) return;
 
-      if (step === actualStep) {
+      if (stepNumber === actualStep) {
         setActualStep((current) => current + 1);
-        const keyStep = Object.keys(baseProgressiveStep).filter(
-          (_, index) => index === step + 1,
-        )[0];
+        const keyStep = getNextStep(stepNumber);
         setWithStepIsOpen({ ...baseProgressiveStep, [keyStep]: true });
-      } else if (step < actualStep) {
-        const keyStep = Object.keys(baseProgressiveStep).filter(
-          (_, index) => index === step + 1,
-        )[0];
+      } else if (stepNumber < actualStep) {
+        const keyStep = getNextStep(stepNumber);
         setWithStepIsOpen({ ...baseProgressiveStep, [keyStep]: true });
       }
     };
 
-  const toggleOpen = (name: keyof T, step: number) => {
+  const toggleOpen = (name: keyof T) => {
+    const step = getStepNumber(name);
     if (step > actualStep) return;
     setWithStepIsOpen({
       ...baseProgressiveStep,
@@ -50,5 +64,11 @@ export function useAccordion<T extends object>({
     });
   };
 
-  return { withStepIsOpen, actualStep, handleUpdateStep, toggleOpen };
+  return {
+    withStepIsOpen,
+    actualStep,
+    handleUpdateStep,
+    toggleOpen,
+    getStepNumber,
+  };
 }
