@@ -1,20 +1,20 @@
 import { useState } from 'react';
 import { UseFormTrigger } from 'react-hook-form';
 
-interface useAccordionDTO<T extends object> {
-  trigger: UseFormTrigger<any>;
+interface useAccordionDTO<T extends object, R extends object> {
+  trigger: UseFormTrigger<R>;
   initialState: T;
 }
 
-interface handleUpdateStepDTO<T> {
+interface handleUpdateStepDTO<T, R> {
   step: keyof T;
-  fieldsToValidate?: string[];
+  fieldsToValidate?: Array<keyof R>;
 }
 
-export function useAccordion<T extends object>({
+export function useAccordion<T extends object, R extends object>({
   trigger,
   initialState,
-}: useAccordionDTO<T>) {
+}: useAccordionDTO<T, R>) {
   const [withStepIsOpen, setWithStepIsOpen] = useState(initialState);
   const [actualStep, setActualStep] = useState(0);
 
@@ -31,18 +31,23 @@ export function useAccordion<T extends object>({
       return acc;
     }, 0);
 
-  const getNextStep = (stepNumbem: number) =>
+  const getNextStep = (stepNumber: number) =>
     Object.keys(baseProgressiveStep).filter(
-      (_, index) => index === stepNumbem + 1,
+      (_, index) => index === stepNumber + 1,
     )[0];
 
+  const isAbleToSubmit = () => {
+    const totalSteps = Object.keys(initialState).map((step) => step).length - 1;
+    return actualStep > totalSteps;
+  };
+
   const handleUpdateStep =
-    ({ step, fieldsToValidate = [] }: handleUpdateStepDTO<T>) =>
+    ({ step, fieldsToValidate = [] }: handleUpdateStepDTO<T, R>) =>
     async (e: any) => {
       const stepNumber = getStepNumber(step);
       e.stopPropagation();
 
-      const isAbleToGO = await trigger(fieldsToValidate);
+      const isAbleToGO = await trigger(fieldsToValidate as any);
       if (!isAbleToGO) return;
 
       if (stepNumber === actualStep) {
@@ -70,5 +75,6 @@ export function useAccordion<T extends object>({
     handleUpdateStep,
     toggleOpen,
     getStepNumber,
+    isAbleToSubmit,
   };
 }
