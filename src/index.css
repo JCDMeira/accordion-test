@@ -1,4 +1,7 @@
 html {
   background-color: #1a1a1a;
-  color: #fff;
+}
+
+input {
+  margin-bottom: 16px;
 }
