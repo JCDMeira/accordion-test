@@ -18,7 +18,8 @@ export const StepConteiner = styled.div`
   width: 32px;
   height: 16px;
 
-  background: #ffaa;
+  background: #faea78;
+  color: #d9ad29;
   border-radius: 90px;
 
   flex: none;
@@ -27,6 +28,6 @@ export const StepConteiner = styled.div`
 `;
 
 export const SvgConteiner = styled(StepConteiner)`
-  color: #ffffff;
-  background: #00ff00;
+  color: #c6e3e7;
+  background: #31a350;
 `;

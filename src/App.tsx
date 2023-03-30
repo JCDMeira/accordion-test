@@ -60,14 +60,11 @@ function App() {
   const errorS2 = !!errors.chocolate;
   const errorS3 = !!errors.coffee;
 
-  console.log(isAbleToSubmit());
   return (
-    <div className="App">
-      <h1>hello</h1>
-
+    <S.Conteiner>
       <form
         action=""
-        style={{ maxWidth: '400px' }}
+        style={{ width: '400px' }}
         onSubmit={handleSubmit(onSubmit)}
       >
         <AccordionItem
@@ -132,7 +129,7 @@ function App() {
           Enviar
         </button>
       </form>
-    </div>
+    </S.Conteiner>
   );
 }
 

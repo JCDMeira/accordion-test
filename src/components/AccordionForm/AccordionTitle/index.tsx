@@ -16,7 +16,7 @@ export const AccordionTitle: React.FC<AccordionTitleProps> = ({
     <S.SectionTitle>
       {stepIsOk ? (
         <S.SvgConteiner>
-          <span>icon</span>
+          <span>OK</span>
         </S.SvgConteiner>
       ) : (
         <S.StepConteiner>

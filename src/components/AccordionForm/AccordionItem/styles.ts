@@ -11,7 +11,7 @@ export const AccordionContent = styled.div<AccordionContentProps>`
 
     padding: 24px;
     gap: 32px;
-    border-radius: ${isOpen ? '8px 8px 0 0' : '8px'};
+    border-radius: 8px;
 
     background-color: #ffff;
 
