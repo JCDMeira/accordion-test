@@ -15,12 +15,16 @@ export const AccordionContent = styled.div<AccordionContentProps>`
 
     background-color: #ffff;
 
-    cursor: ${isDisabled ? 'not-allowed' : 'pointer'};
     position: relative;
     margin-bottom: 16px;
 
+    .click {
+      cursor: ${isDisabled ? 'not-allowed' : 'pointer'};
+    }
+
     :after {
       ${isOpen && 'transform: rotate(180deg);'};
+      cursor: ${isDisabled ? 'not-allowed' : 'pointer'};
       transition: all 0.3s ease-in;
       content: url(${arrow});
       position: absolute;
@@ -38,4 +42,7 @@ export const FormSection = styled.div`
 export const ButtonConteiner = styled.div`
   display: flex;
   justify-content: flex-end;
+  button {
+    cursor: pointer;
+  }
 `;

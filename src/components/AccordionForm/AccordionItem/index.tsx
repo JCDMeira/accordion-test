@@ -35,7 +35,13 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
       onClick={toggleOpen}
       isDisabled={stepNumber > actualStep}
     >
-      <AccordionTitle title={title} stepIsOk={stepIsOk} step={stepNumber + 1} />
+      <div className="click">
+        <AccordionTitle
+          title={title}
+          stepIsOk={stepIsOk}
+          step={stepNumber + 1}
+        />
+      </div>
 
       {isOpen && (
         <S.FormSection onClick={(e: any) => e.stopPropagation()}>
