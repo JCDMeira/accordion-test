@@ -36,6 +36,9 @@ export function useAccordion<T extends object, R extends object>({
       (_, index) => index === stepNumber + 1,
     )[0];
 
+  const setStepStatus = (keyStep: string) =>
+    setWithStepIsOpen({ ...baseProgressiveStep, [keyStep]: true });
+
   const isAbleToSubmit = () => {
     const totalSteps = Object.keys(initialState).map((step) => step).length - 1;
     return actualStep > totalSteps;
@@ -44,20 +47,18 @@ export function useAccordion<T extends object, R extends object>({
   const handleUpdateStep =
     ({ step, fieldsToValidate = [] }: handleUpdateStepDTO<T, R>) =>
     async (e: any) => {
-      const stepNumber = getStepNumber(step);
       e.stopPropagation();
 
       const isAbleToGO = await trigger(fieldsToValidate as any);
       if (!isAbleToGO) return;
 
+      const stepNumber = getStepNumber(step);
+      const keyStep = getNextStep(stepNumber);
+
       if (stepNumber === actualStep) {
         setActualStep((current) => current + 1);
-        const keyStep = getNextStep(stepNumber);
-        setWithStepIsOpen({ ...baseProgressiveStep, [keyStep]: true });
-      } else if (stepNumber < actualStep) {
-        const keyStep = getNextStep(stepNumber);
-        setWithStepIsOpen({ ...baseProgressiveStep, [keyStep]: true });
       }
+      setStepStatus(keyStep);
     };
 
   const toggleOpen = (name: keyof T) => {

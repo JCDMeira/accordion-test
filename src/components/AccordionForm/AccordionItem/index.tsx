@@ -28,6 +28,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
   isFinalStep = false,
 }) => {
   const stepIsOk = isAbleToGO && stepNumber < actualStep;
+
   return (
     <S.AccordionContent
       arrow={Arrow}
